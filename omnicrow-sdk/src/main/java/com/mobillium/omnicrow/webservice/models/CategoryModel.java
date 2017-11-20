@@ -8,8 +8,7 @@ public class CategoryModel extends BaseModel {
 
     private String path;
 
-    public CategoryModel(String user_id, String path) {
-        super(user_id);
+    public CategoryModel(String path) {
         this.path = path;
     }
 

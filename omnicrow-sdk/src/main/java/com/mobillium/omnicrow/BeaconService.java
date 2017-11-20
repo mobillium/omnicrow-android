@@ -161,14 +161,14 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
                     if (foundBeacon == null) {
                         foundBeacon = beaconArrayList.get(0);
 //                        throwPush(foundBeacon);
-                        OmniCrow.trackBeaconEvent(new BeaconModel(OmniCrow.getUserId(), foundBeacon.getIdentifier(2).toString(), foundBeacon.getIdentifier(1).toString()));
+                        OmniCrow.trackBeaconEvent(new BeaconModel(foundBeacon.getIdentifier(2).toString(), foundBeacon.getIdentifier(1).toString()));
 
                     } else {
                         //check beacon already on the list
                         if (!foundBeacon.getIdentifier(2).toString().equalsIgnoreCase(beaconArrayList.get(0).getIdentifier(2).toString())) {
                             foundBeacon = beaconArrayList.get(0);
 //                            throwPush(foundBeacon);
-                            OmniCrow.trackBeaconEvent(new BeaconModel(OmniCrow.getUserId(), foundBeacon.getIdentifier(2).toString(), foundBeacon.getIdentifier(1).toString()));
+                            OmniCrow.trackBeaconEvent(new BeaconModel(foundBeacon.getIdentifier(2).toString(), foundBeacon.getIdentifier(1).toString()));
                         }
 
                     }

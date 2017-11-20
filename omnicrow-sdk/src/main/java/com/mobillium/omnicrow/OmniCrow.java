@@ -12,9 +12,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.mobillium.omnicrow.utils.MyVolley;
-import com.mobillium.omnicrow.utils.OmniCrowAnalyticsException;
-import com.mobillium.omnicrow.utils.OmniCrowAnalyticsSdkNotInitializedException;
 import com.mobillium.omnicrow.utils.OmniCrowAnalyticsLogger;
+import com.mobillium.omnicrow.utils.OmniCrowAnalyticsSdkNotInitializedException;
 import com.mobillium.omnicrow.webservice.ServiceCallback;
 import com.mobillium.omnicrow.webservice.ServiceException;
 import com.mobillium.omnicrow.webservice.ServiceOperations;
@@ -122,7 +121,7 @@ public class OmniCrow {
 
     public static String getUserId() {
         if(TextUtils.isEmpty(userId)){
-            throw new OmniCrowAnalyticsException("You must set userId");
+           return null;
 
         }
         return userId;

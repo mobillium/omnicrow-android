@@ -8,8 +8,7 @@ public class BeaconModel extends BaseModel {
     private String major;
     private String minor;
 
-    public BeaconModel(String user_id, String minor, String major) {
-        super(user_id);
+    public BeaconModel(String major, String minor) {
         this.major = major;
         this.minor = minor;
     }
