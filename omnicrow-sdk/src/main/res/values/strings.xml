@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">TubitakSdk</string>
+
+    <!--service errors-->
+    <string name="error_internet">İnternet bağlantınızı kontrol ediniz.</string>
+    <string name="error_bilinmeyen">Üzgünüz şuanda size hizmet veremiyoruz. Lütfen daha sonra tekrar deneyiniz.</string>
+    <string name="error_cevap_yok">Üzgünüz şuanda size hizmet veremiyoruz. Lütfen daha sonra tekrar deneyiniz.</string>
+
+    <!-- enums -->
+    <string name="proximity_immediate">Immediate</string>
+    <string name="proximity_near">Near</string>
+    <string name="proximity_far">Far</string>
+
+    <!-- item action mvv -->
+    <string name="action_add_action">ACTION</string>
+    <string name="mv_action_text_name">Name</string>
+    <string name="mv_action_text_event">Event</string>
+    <string name="mv_event_type_leaves_region">Leaves region</string>
+    <string name="mv_event_type_enters_region">Enters region</string>
+    <string name="mv_event_type_near_you">Near you</string>
+    <string name="mv_action_status_enable">Enabled</string>
+    <string name="mv_action_status_disabled">Disabled</string>
+
+    <string name="action_alarm_text_title">Beacon Event"</string>
+
+</resources>
