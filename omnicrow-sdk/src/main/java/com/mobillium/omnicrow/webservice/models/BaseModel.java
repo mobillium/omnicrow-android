@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import com.mobillium.omnicrow.OmniCrow;
 
 import static com.mobillium.omnicrow.OmniCrow.generateUUID;
+import static com.mobillium.omnicrow.OmniCrow.getUserId;
 
 /**
  * Created by oguzhandongul on 20/11/2017.
@@ -38,7 +39,7 @@ public class BaseModel {
         this.platform = "android";
         this.version = getVersionCode();
         this.uuid = generateUUID();
-        this.user_id = user_id;
+        this.user_id = getUserId();
     }
 
 
