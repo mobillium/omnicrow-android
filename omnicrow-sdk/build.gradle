@@ -25,18 +25,22 @@ android {
 }
 
 
-ext.supportLibVersion = '26.0.2'
+ext.supportLibVersion = '26.1.0'
+ext.playLibVersion = '11.0.2'
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile "com.android.support:appcompat-v7:${supportLibVersion}"
-    compile 'com.google.code.gson:gson:2.8.1'
-    compile 'com.mcxiaoke.volley:library:1.0.19'
+    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
+    implementation 'com.google.code.gson:gson:2.8.1'
+    implementation 'com.mcxiaoke.volley:library:1.0.19'
     testCompile 'junit:junit:4.12'
-    compile "org.altbeacon:android-beacon-library:2.12.3"
+    implementation "org.altbeacon:android-beacon-library:2.12.3"
+    implementation "com.google.firebase:firebase-core:${playLibVersion}"
+    implementation "com.google.firebase:firebase-messaging:${playLibVersion}"
 }
 
 
