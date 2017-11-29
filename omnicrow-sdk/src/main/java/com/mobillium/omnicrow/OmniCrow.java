@@ -23,6 +23,7 @@ import com.mobillium.omnicrow.webservice.models.CartModel;
 import com.mobillium.omnicrow.webservice.models.CategoryModel;
 import com.mobillium.omnicrow.webservice.models.ItemModel;
 import com.mobillium.omnicrow.webservice.models.PurchaseModel;
+import com.mobillium.omnicrow.webservice.models.PushModel;
 import com.mobillium.omnicrow.webservice.models.RequestModel;
 
 import java.util.UUID;
@@ -288,6 +289,29 @@ public class OmniCrow {
         }
 
         RequestModel requestModel = new RequestModel(Request.Method.POST, "event/beacon", null, true, itemModel);
+        ServiceOperations.makeRequest(applicationContext, requestModel, new ServiceCallback<ServiceSuccess>() {
+            @Override
+            public void success(ServiceSuccess result) {
+                OmniCrowAnalyticsLogger.writeInfoLog(result.getMessage());
+            }
+
+            @Override
+            public void error(ServiceException e) {
+                OmniCrowAnalyticsLogger.writeErrorLog(e.getMessage());
+
+            }
+        }, new TypeToken<ServiceSuccess>() {
+        });
+
+    }
+
+
+    public static void registerPushToken(PushModel itemModel) {
+        if (itemModel == null) {
+            throw new OmniCrowAnalyticsSdkNotInitializedException("You must initialize the OmniCrow SDK first");
+        }
+
+        RequestModel requestModel = new RequestModel(Request.Method.POST, "device", null, true, itemModel);
         ServiceOperations.makeRequest(applicationContext, requestModel, new ServiceCallback<ServiceSuccess>() {
             @Override
             public void success(ServiceSuccess result) {
