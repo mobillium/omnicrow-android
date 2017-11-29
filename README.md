@@ -41,11 +41,12 @@ import com.mobillium.omnicrowsdk.OmniCrowAnalytics;
 OmniCrowAnalytics.sdkInitialize(getApplicationContext(), "YOUR_APP_ID",false);
 
 ```
-There are 5 different types of events: 
+There are 5 different types of features: 
 - **Product View**, 
 - **Category View**, 
 - **Add to Cart**, 
 - **Purchase** 
+- **Push Notification** 
 - **Beacon Detecting** 
 
 
@@ -110,6 +111,13 @@ list.add(productModel);
 OmniCrowAnalytics.trackPurchaseEvent(new PurchaseModel("CUSTOMER_ID", "ORDER_ID", list, "TOTAL_PAID_PRICE"));
 ```
 
+### Registering for Push Notifications
+
+You can register for push notification service like the example below:
+
+```java
+OmniCrow.registerPushToken(new PushModel("PUSH_REGISTER_TOKEN");
+```
 
 ### Detecting Beacons
 
@@ -203,7 +211,6 @@ private void initBeaconManager() {
         if (enable) {
             Log.d(Constants.TAG, "Enable Background Scan");
             enableRegions();
-            //loadTrackedBeacons();
         } else {
             Log.d(Constants.TAG, "Disable Background Scan");
             disableRegions();
@@ -228,7 +235,7 @@ private void initBeaconManager() {
     public List<Region> getAllEnabledRegions() {
         List<Region> regions = new ArrayList<>();
         List<ActionBeacon> actions = new ArrayList<>();
-
+        
         for (ActionBeacon action : actions) {
             regions.add(ActionRegion.parseRegion(action));
         }
