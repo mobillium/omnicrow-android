@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TubitakSdk</string>
+    <string name="app_name">OmniCrowSdk</string>
 
     <!--service errors-->
     <string name="error_internet">İnternet bağlantınızı kontrol ediniz.</string>

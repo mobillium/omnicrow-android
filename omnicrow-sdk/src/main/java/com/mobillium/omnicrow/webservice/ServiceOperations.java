@@ -32,6 +32,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.mobillium.omnicrow.OmniCrow.baseUrl;
 import static com.mobillium.omnicrow.OmniCrow.getGson;
 
 
@@ -40,7 +41,7 @@ import static com.mobillium.omnicrow.OmniCrow.getGson;
  */
 
 public class ServiceOperations {
-    private static String baseUrl = "https://tubitak.mobillium.com/api/";
+//    private static String baseUrl = "https://tubitak.mobillium.com/api/";
     private static String sandboxUrl = "https://dev.tubitak.mobillium.com/api/";
     public static ProgressDialog pd;
     public static final boolean DEBUG = BuildConfig.DEBUG;

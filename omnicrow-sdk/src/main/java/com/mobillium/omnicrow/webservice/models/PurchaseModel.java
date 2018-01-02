@@ -11,8 +11,7 @@ public class PurchaseModel extends BaseModel{
     private ArrayList<ProductModel> items = new ArrayList<>();
     private double total;
 
-    public PurchaseModel(String user_id, String id, ArrayList<ProductModel> items, double total) {
-        super(user_id);
+    public PurchaseModel(String id, ArrayList<ProductModel> items, double total) {
         this.id = id;
         this.items = items;
         this.total = total;

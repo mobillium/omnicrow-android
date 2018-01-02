@@ -9,8 +9,7 @@ import java.util.ArrayList;
 public class CartModel extends BaseModel{
     private ArrayList<ProductModel> items = new ArrayList<>();
 
-    public CartModel(String user_id, ArrayList<ProductModel> items) {
-        super(user_id);
+    public CartModel(ArrayList<ProductModel> items) {
         this.items = items;
     }
 

@@ -1,7 +1,7 @@
 package com.mobillium.omnicrow.utils;
 
 /**
- * An Exception indicating that the com.mobillium.tubitaksdk.OmniCrow SDK has not been correctly initialized.
+ * An Exception indicating that the com.mobillium.OmniCrowSdk.OmniCrow SDK has not been correctly initialized.
  */
 public class OmniCrowAnalyticsSdkNotInitializedException extends OmniCrowAnalyticsException {
     static final long serialVersionUID = 1;

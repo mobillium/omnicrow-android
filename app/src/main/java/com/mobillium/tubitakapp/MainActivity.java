@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        OmniCrow.sdkInitialize(getApplicationContext(), "", true);
+        OmniCrow.sdkInitialize(getApplicationContext(), "https://tubitak.mobillium.com/api/", true);
         OmniCrow.setUserId("111111");
 
 //        OmniCrow.trackItemEvent(new ItemModel("1","1"));

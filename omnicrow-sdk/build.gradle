@@ -3,7 +3,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    buildToolsVersion "26.0.3"
 
     useLibrary 'org.apache.http.legacy'
 
@@ -25,31 +25,19 @@ android {
 }
 
 
-ext.supportLibVersion = '26.0.2'
+ext.supportLibVersion = '26.1.0'
+ext.playLibVersion = '11.0.2'
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile "com.android.support:appcompat-v7:${supportLibVersion}"
-    compile 'com.google.code.gson:gson:2.8.1'
-    compile 'com.mcxiaoke.volley:library:1.0.19'
-    testCompile 'junit:junit:4.12'
-    compile "org.altbeacon:android-beacon-library:2.12.3"
+    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
+    implementation 'com.google.code.gson:gson:2.8.1'
+    implementation 'com.mcxiaoke.volley:library:1.0.19'
+    testImplementation 'junit:junit:4.12'
+    implementation "com.google.firebase:firebase-core:${playLibVersion}"
+    implementation "com.google.firebase:firebase-messaging:${playLibVersion}"
+    implementation "org.altbeacon:android-beacon-library:2.12.3"
 }
-
-
-// This is the actual solution, as in https://stackoverflow.com/a/19037807/1002054
-task clearJar(type: Delete) {
-    delete 'build/libs/tubitaksdk.jar'
-}
-
-task makeJar(type: Copy) {
-    from('build/bundles/release/')
-    into('build/libs/')
-    include('classes.jar')
-    rename ('classes.jar', 'tubitaksdk.jar')
-}
-
-makeJar.dependsOn(clearJar, build)

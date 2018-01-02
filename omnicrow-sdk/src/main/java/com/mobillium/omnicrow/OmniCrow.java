@@ -13,8 +13,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.mobillium.omnicrow.utils.MyVolley;
 import com.mobillium.omnicrow.utils.OmniCrowAnalyticsException;
-import com.mobillium.omnicrow.utils.OmniCrowAnalyticsSdkNotInitializedException;
 import com.mobillium.omnicrow.utils.OmniCrowAnalyticsLogger;
+import com.mobillium.omnicrow.utils.OmniCrowAnalyticsSdkNotInitializedException;
 import com.mobillium.omnicrow.webservice.ServiceCallback;
 import com.mobillium.omnicrow.webservice.ServiceException;
 import com.mobillium.omnicrow.webservice.ServiceOperations;
@@ -24,6 +24,7 @@ import com.mobillium.omnicrow.webservice.models.CartModel;
 import com.mobillium.omnicrow.webservice.models.CategoryModel;
 import com.mobillium.omnicrow.webservice.models.ItemModel;
 import com.mobillium.omnicrow.webservice.models.PurchaseModel;
+import com.mobillium.omnicrow.webservice.models.PushModel;
 import com.mobillium.omnicrow.webservice.models.RequestModel;
 
 import java.util.UUID;
@@ -42,8 +43,8 @@ public class OmniCrow {
     private static RequestQueue requestQueue;
 
     static OmniCrow instance = null;
-    static String appId;
-    static String userId;
+    public static String baseUrl;
+    static String userId = "";
     static Context applicationContext;
     static Boolean sdkInitialized = false; //Default false
     boolean isDebugEnabled = false; //Default false
@@ -99,16 +100,19 @@ public class OmniCrow {
      * undetermined if this function is not called. It should be called as early as possible.
      *
      * @param applicationContext The application context
-     * @param appId              String identifier value provided by OmniCrow
+     * @param baseUrl            String identifier value provided by OmniCrow
      * @param sandBox            boolean value determines SKD works in sandbox or live mode
      */
-    public static synchronized void sdkInitialize(Context applicationContext, String appId, boolean sandBox) {
+    public static synchronized void sdkInitialize(Context applicationContext, String baseUrl, boolean sandBox) {
         if (sdkInitialized == true) {
             return;
         }
+        if (TextUtils.isEmpty(baseUrl)) {
+            throw new OmniCrowAnalyticsException("You must set base url");
+        }
 
         OmniCrow.applicationContext = applicationContext.getApplicationContext();
-        OmniCrow.appId = appId;
+        OmniCrow.baseUrl = baseUrl;
         setSandBoxMode(sandBox);
         sdkInitialized = true;
 
@@ -121,10 +125,10 @@ public class OmniCrow {
     }
 
     public static String getUserId() {
-        if(TextUtils.isEmpty(userId)){
-            throw new OmniCrowAnalyticsException("You must set userId");
-
-        }
+//        if (TextUtils.isEmpty(userId)) {
+//            throw new OmniCrowAnalyticsException("You must set userId");
+//
+//        }
         return userId;
     }
 
@@ -143,7 +147,7 @@ public class OmniCrow {
 
     public static SharedPreferences getmSharedPrefs() {
         if (mSharedPrefs == null) {
-            mSharedPrefs = getContext().getSharedPreferences("tubitakSdk",
+            mSharedPrefs = getContext().getSharedPreferences("OmniCrowSdk",
                     MODE_PRIVATE);
         }
         return mSharedPrefs;
@@ -152,7 +156,7 @@ public class OmniCrow {
     public static SharedPreferences.Editor getmPrefsEditor() {
 
         if (mPrefsEditor == null || mSharedPrefs == null) {
-            mSharedPrefs = getContext().getSharedPreferences("tubitakSdk",
+            mSharedPrefs = getContext().getSharedPreferences("OmniCrowSdk",
                     MODE_PRIVATE);
             mPrefsEditor = mSharedPrefs.edit();
         }
@@ -304,6 +308,29 @@ public class OmniCrow {
         });
 
     }
+
+    public static void registerPushToken(PushModel itemModel) {
+        if (itemModel == null) {
+            throw new OmniCrowAnalyticsSdkNotInitializedException("You must initialize the OmniCrow SDK first");
+        }
+
+        RequestModel requestModel = new RequestModel(Request.Method.POST, "device", null, true, itemModel);
+        ServiceOperations.makeRequest(applicationContext, requestModel, new ServiceCallback<ServiceSuccess>() {
+            @Override
+            public void success(ServiceSuccess result) {
+                OmniCrowAnalyticsLogger.writeInfoLog(result.getMessage());
+            }
+
+            @Override
+            public void error(ServiceException e) {
+                OmniCrowAnalyticsLogger.writeErrorLog(e.getMessage());
+
+            }
+        }, new TypeToken<ServiceSuccess>() {
+        });
+
+    }
+
 
     public static String generateUUID() {
         String uuid = getmSharedPrefs().getString("uuid", "");
