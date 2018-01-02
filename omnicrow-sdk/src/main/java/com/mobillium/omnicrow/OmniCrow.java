@@ -1,13 +1,33 @@
 package com.mobillium.omnicrow;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -19,6 +39,7 @@ import com.mobillium.omnicrow.webservice.ServiceCallback;
 import com.mobillium.omnicrow.webservice.ServiceException;
 import com.mobillium.omnicrow.webservice.ServiceOperations;
 import com.mobillium.omnicrow.webservice.ServiceSuccess;
+import com.mobillium.omnicrow.webservice.models.BaseModel;
 import com.mobillium.omnicrow.webservice.models.BeaconModel;
 import com.mobillium.omnicrow.webservice.models.CartModel;
 import com.mobillium.omnicrow.webservice.models.CategoryModel;
@@ -26,7 +47,10 @@ import com.mobillium.omnicrow.webservice.models.ItemModel;
 import com.mobillium.omnicrow.webservice.models.PurchaseModel;
 import com.mobillium.omnicrow.webservice.models.PushModel;
 import com.mobillium.omnicrow.webservice.models.RequestModel;
+import com.mobillium.omnicrow.webservice.models.ResponsePopup;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -332,6 +356,40 @@ public class OmniCrow {
     }
 
 
+    public static void requestForPopup(final AppCompatActivity compatActivity) {
+        if (TextUtils.isEmpty(getUserId())) {
+            return;
+        }
+        BaseModel baseModel = new BaseModel();
+        Map<String, String> params = new HashMap<>();
+        params.put("uuid", baseModel.getUuid());
+        params.put("platform", baseModel.getPlatform());
+        params.put("version", baseModel.getVersion());
+        params.put("user-id", baseModel.getUser_id());
+
+
+        RequestModel requestModel = new RequestModel(Request.Method.GET, "popup", null, false, params);
+        ServiceOperations.makeRequest(applicationContext, requestModel, new ServiceCallback<ResponsePopup>() {
+            @Override
+            public void success(ResponsePopup result) {
+//                OmniCrowAnalyticsLogger.writeInfoLog(result.getMessage());
+                if (compatActivity != null && !compatActivity.isDestroyed()) {
+                    showPopup(compatActivity, result);
+
+                }
+            }
+
+            @Override
+            public void error(ServiceException e) {
+                OmniCrowAnalyticsLogger.writeErrorLog(e.getMessage());
+
+            }
+        }, new TypeToken<ResponsePopup>() {
+        });
+
+//        params.put("test_mode", "1");
+    }
+
     public static String generateUUID() {
         String uuid = getmSharedPrefs().getString("uuid", "");
         if (TextUtils.isEmpty(uuid)) {
@@ -341,6 +399,89 @@ public class OmniCrow {
 
         return uuid;
 
+    }
+
+
+    private static void showPopup(final AppCompatActivity compatActivity, final ResponsePopup responsePopup) {
+        LayoutInflater inflater = (LayoutInflater) compatActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(compatActivity);
+        View dialogView = inflater.inflate(R.layout.dialog_ad_popup, null);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setCancelable(false);
+        final AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+
+        //createviews
+        ScrollView svPopUp = (ScrollView) dialogView.findViewById(R.id.nsvPopup);
+        LinearLayout llPopUp = (LinearLayout) dialogView.findViewById(R.id.llPopup);
+        RelativeLayout rlImage = (RelativeLayout) dialogView.findViewById(R.id.rlImage);
+        Button btPositive = (Button) dialogView.findViewById(R.id.btKabul);
+        Button btNegative = (Button) dialogView.findViewById(R.id.btKapat);
+        TextView tvTitle = (TextView) dialogView.findViewById(R.id.tvTitle);
+        TextView tvContent = (TextView) dialogView.findViewById(R.id.tvContent);
+        final ProgressBar progressBar = (ProgressBar) dialogView.findViewById(R.id.progressBar);
+        final ImageView ivPopup = (ImageView) dialogView.findViewById(R.id.ivPopup);
+
+        //setdatas
+        btPositive.setText(responsePopup.getButton());
+        tvTitle.setText(responsePopup.getTitle());
+        tvContent.setText(responsePopup.getContent());
+
+        if (responsePopup.getContent().length() > 300) {
+            LinearLayout.LayoutParams scrollParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, convertDpiToPixel(compatActivity, 300));
+            svPopUp.setLayoutParams(scrollParams);
+        }
+
+        if (responsePopup.getImage() != null && !TextUtils.isEmpty(responsePopup.getImage().getUrl())) {
+            Glide.with(compatActivity)
+                    .load(responsePopup.getImage().getUrl())
+                    .asBitmap()
+//                    .error(R.drawable.img_vitrinova_placeholder)
+//                    .placeholder(R.drawable.img_vitrinova_placeholder)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap bitmap, GlideAnimation anim) {
+                            ivPopup.setImageBitmap(bitmap);
+                            progressBar.setVisibility(View.GONE);
+                            progressBar.setIndeterminate(false);
+                        }
+                    });
+        } else {
+            ivPopup.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+            progressBar.setIndeterminate(false);
+        }
+
+        //setlisteners
+        btPositive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = responsePopup.getUri();
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                compatActivity.startActivity(i);
+            }
+        });
+
+        btNegative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+    }
+
+    public static int convertDpiToPixel(Context ctx, int dpi) {
+        float pixel = 0;
+        try {
+            Resources r = ctx.getResources();
+            pixel = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpi,
+                    r.getDisplayMetrics());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return (int) pixel;
     }
 
 }

@@ -1,5 +1,7 @@
 package com.mobillium.omnicrow.webservice.models;
 
+import java.util.Map;
+
 /**
  * Created by oguzhandongul on 31/05/2017.
  */
@@ -9,6 +11,7 @@ public class RequestModel<T> {
     private String offsetUrl;
     private String pdMessage;
     private boolean showErrorMessage;
+    private Map params;
     private T data;
 
     public RequestModel(int serviceType, String offsetUrl, String pdMessage, T data) {
@@ -24,6 +27,21 @@ public class RequestModel<T> {
         this.pdMessage = pdMessage;
         this.showErrorMessage = showErrorMessage;
         this.data = data;
+    }
+    public RequestModel(int serviceType, String offsetUrl, String pdMessage, boolean showErrorMessage, Map<String,String> params) {
+        this.serviceType = serviceType;
+        this.offsetUrl = offsetUrl;
+        this.pdMessage = pdMessage;
+        this.showErrorMessage = showErrorMessage;
+        this.params = params;
+    }
+
+    public Map<String, String> getParams() {
+        return params;
+    }
+
+    public void setParams(Map<String, String> params) {
+        this.params = params;
     }
 
     public int getServiceType() {

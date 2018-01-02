@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppButtons">
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:paddingRight">30dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/font_large</item>
+    </style>
+
+    <style name="RectButtonGrey" parent="AppButtons">
+        <item name="android:textColor">@color/mainGrey_xDark</item>
+        <item name="android:background">@drawable/button_rect_grey</item>
+    </style>
+
+    <style name="RectButtonGreen" parent="AppButtons">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/button_rect_green</item>
+    </style>
+</resources>

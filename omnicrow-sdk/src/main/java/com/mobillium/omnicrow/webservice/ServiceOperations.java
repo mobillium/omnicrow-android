@@ -41,7 +41,7 @@ import static com.mobillium.omnicrow.OmniCrow.getGson;
  */
 
 public class ServiceOperations {
-//    private static String baseUrl = "https://tubitak.mobillium.com/api/";
+    //    private static String baseUrl = "https://tubitak.mobillium.com/api/";
     private static String sandboxUrl = "https://dev.tubitak.mobillium.com/api/";
     public static ProgressDialog pd;
     public static final boolean DEBUG = BuildConfig.DEBUG;
@@ -51,14 +51,15 @@ public class ServiceOperations {
                                        final RequestModel requestModel, final ServiceCallback<T> callback, final TypeToken typeToken) {
 
 
-        if(OmniCrow.SANDBOX_MODE){
+        if (OmniCrow.SANDBOX_MODE) {
             baseUrl = sandboxUrl;
-        }else {
-            baseUrl = "https://tubitak.mobillium.com/api/";
+        } else {
+            baseUrl = baseUrl;
         }
 
+
         if (!isOnline(mContext)) {
-            if (mContext != null  && DEBUG) {
+            if (mContext != null && DEBUG) {
                 try {
                     Toast.makeText(mContext, mContext.getString(R.string.error_internet), Toast.LENGTH_SHORT).show();
                     callback.error(new ServiceException(mContext.getString(R.string.error_internet)));
@@ -72,7 +73,14 @@ public class ServiceOperations {
 
         final WeakReference<Context> contextRef = new WeakReference<>(mContext);
 
-        final String url = baseUrl + requestModel.getOffsetUrl();
+        String getParams = "";
+        if (requestModel.getServiceType() == Request.Method.GET) {
+            getParams = "?" + encodeParameters(requestModel.getParams());
+
+        }
+
+        final String url = baseUrl + requestModel.getOffsetUrl() + getParams;
+
 
         if (DEBUG || true) {
             Log.d("OmniCrow", "İstek yapılan url: " + url);

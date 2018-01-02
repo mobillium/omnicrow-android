@@ -35,6 +35,14 @@ public class BaseModel {
         this.version = version;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
     public BaseModel() {
         this.platform = "android";
         this.version = getVersionCode();

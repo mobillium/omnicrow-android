@@ -40,4 +40,5 @@ dependencies {
     implementation "com.google.firebase:firebase-core:${playLibVersion}"
     implementation "com.google.firebase:firebase-messaging:${playLibVersion}"
     implementation "org.altbeacon:android-beacon-library:2.12.3"
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
 }
