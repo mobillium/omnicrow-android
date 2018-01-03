@@ -38,14 +38,16 @@ You need to initialize OmniCrow SDK before using it.
 ```java
 import com.mobillium.omnicrowsdk.OmniCrowAnalytics;
 
-OmniCrowAnalytics.sdkInitialize(getApplicationContext(), "YOUR_APP_ID",false);
+OmniCrowAnalytics.sdkInitialize(getApplicationContext(), "BASE_URL",false);
 
 ```
-There are 5 different types of features: 
+There are 8 different types of features: 
 - **Product View**, 
 - **Category View**, 
 - **Add to Cart**, 
 - **Purchase** 
+- **Device Register** 
+- **Popup Ads** 
 - **Push Notification** 
 - **Beacon Detecting** 
 
@@ -53,7 +55,7 @@ There are 5 different types of features:
 
 ### Tracking Product Views
 
-After initialising OmniCrow SDK correctly, you can track product views like below:
+After initializing OmniCrow SDK correctly, you can track product views like below:
 
 
 ```java
@@ -111,9 +113,19 @@ list.add(productModel);
 OmniCrowAnalytics.trackPurchaseEvent(new PurchaseModel("CUSTOMER_ID", "ORDER_ID", list, "TOTAL_PAID_PRICE"));
 ```
 
-### Registering for Push Notifications
 
-You can register for push notification service like the example below:
+### Showing Advertisement Popup
+
+After initializing OmniCrow SDK correctly, you can make a request for showing advertisement popup, like the example below:
+
+```java
+OmniCrow.requestForPopup(activityContext);
+```
+
+
+### Registering Device for Push Notifications
+
+You can register any device for push notification service like the example below:
 
 ```java
 OmniCrow.registerPushToken(new PushModel("PUSH_REGISTER_TOKEN");
@@ -147,12 +159,12 @@ Finally add these methods to your application class
 
 ```java
 import com.mobillium.omnicrowsdk.OmniCrowAnalytics;
-import com.mobillium.tubitaksdk.TubitakAnalytics;
-import com.mobillium.tubitaksdk.utils.Constants;
-import com.mobillium.tubitaksdk.utils.PreferencesUtil;
-import com.mobillium.tubitaksdk.webservice.models.ActionBeacon;
-import com.mobillium.tubitaksdk.webservice.models.ActionRegion;
-import com.mobillium.tubitaksdk.webservice.models.RegionName;
+import com.mobillium.omnicrowsdk.TubitakAnalytics;
+import com.mobillium.omnicrowsdk.utils.Constants;
+import com.mobillium.omnicrowsdk.utils.PreferencesUtil;
+import com.mobillium.omnicrowsdk.webservice.models.ActionBeacon;
+import com.mobillium.omnicrowsdk.webservice.models.ActionRegion;
+import com.mobillium.omnicrowsdk.webservice.models.RegionName;
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
