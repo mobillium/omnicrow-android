@@ -12,7 +12,7 @@ public class ResponsePopup {
     private String button;
     private String uri;
     private String extra_text;
-    private PopupImage image;
+    private String image;
 
     public int getId() {
         return id;
@@ -62,11 +62,11 @@ public class ResponsePopup {
         this.extra_text = extra_text;
     }
 
-    public PopupImage getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(PopupImage image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }

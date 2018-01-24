@@ -432,9 +432,9 @@ public class OmniCrow {
             svPopUp.setLayoutParams(scrollParams);
         }
 
-        if (responsePopup.getImage() != null && !TextUtils.isEmpty(responsePopup.getImage().getUrl())) {
+        if (!TextUtils.isEmpty(responsePopup.getImage())) {
             Glide.with(compatActivity)
-                    .load(responsePopup.getImage().getUrl())
+                    .load(responsePopup.getImage())
                     .asBitmap()
 //                    .error(R.drawable.img_vitrinova_placeholder)
 //                    .placeholder(R.drawable.img_vitrinova_placeholder)
